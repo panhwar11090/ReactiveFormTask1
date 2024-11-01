@@ -46,6 +46,7 @@ export class AppComponent implements OnInit {
     });
   }
 
+  // this is the formGropu in which we add details of items
   createItemForm(): FormGroup {
     return this.fb.group({
       size: ['', Validators.required],
@@ -57,6 +58,7 @@ export class AppComponent implements OnInit {
     });
   }
 
+  // Nested Group which will open on checkbox selection
   createSeasonDetails(): FormGroup{
     return this.fb.group({
       seasonName:['', Validators.required],
@@ -77,11 +79,13 @@ export class AppComponent implements OnInit {
   }
 
 
+  // this logic will work when we change the store from drop down selection
   onStoreChange(storeChangeEvent: Event): void {
     const input = storeChangeEvent.target as HTMLInputElement; 
     this.selectedStoreIndex = this.stores.findIndex(x => x.value == input.value);
   }
 
+  // this the logic fro checkbox of season
   toggleSession(itemIndex: number, storeIndex: number): void{
     const item = this.getItems(storeIndex).at(itemIndex);
     const seasonArray = this.getSeasonDetails(itemIndex, storeIndex);

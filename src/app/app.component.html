@@ -1,73 +1,70 @@
-<div class="w-full h-auto surface-500 flex flex-column absolute">
-  <div class="field" [formGroup]="storeForm">
-    <div class="store-select-container">
-      <label for="store">Select Store:</label>
-      <select formControlName="store" (change)="onStoreChange($event)">
-        <option value="">-- Select Store --</option>
-        <option *ngFor="let store of stores" [value]="store.value">
-          {{ store.label }}
-        </option>
-      </select>
-    </div>
-
-    <h3 *ngIf="selectedStore">Selected store is: {{ selectedStore | titlecase }}</h3>
-
-    <div formArrayName="storeDetails">
-      <div *ngFor="let storeDetail of storeDetails.controls; let i = index" [formGroupName]="i">
-        <div formArrayName="items">
-          <div *ngIf="selectedStoreIndex === i">
-            <div *ngFor="let item of getItems(i).controls; let j = index" [formGroupName]="j" class="item-container">
-              <label>Please enter your item size:</label>
-              <label>Size:</label>
-              <input formControlName="size" placeholder="Shoe Size">
-              <small *ngIf="item.get('size')?.invalid && item.get('size')?.touched">
-                size is required
-              </small>
-              <!-- <label>Color:</label> -->
-              <label>Color:</label>
-              <input formControlName="color" placeholder="Color">
-              <small *ngIf="item.get('color')?.invalid &&  item.get('color')?.touched">
-                color is required
-              </small>
-
-              <label>Price:</label>
-              <input formControlName="price" type="number" placeholder="Price">
-              <small *ngIf="item.get('price')?.invalid && item.get('price')">price is required</small>
-
-
-              <label>Season</label>
-              <input type="checkbox" formControlName="season" (change)="toggleSession(j,i)">
-
-
-              <div formArrayName="seasonDetails" *ngIf="item.get('season')?.value">
-                <div *ngFor="let seasonDetail of getSeasonDetails(j, i).controls; let k = index" [formGroupName]="k">
-                  <label>Season Name:</label>
-                  <input formControlName="seasonName" placeholder="Enter Season Name">
-                  <label>Season Detail:</label>
-                  <input formControlName="seasonDetail" placeholder="Enter Season Detail">
-                  <small *ngIf="seasonDetail?.invalid && seasonDetail?.touched">Please fill all the fields</small>
-                  <button type="button" (click)="removeSeasonDetail(j, i, k)">Remove Season Detail</button>
-                </div>
-                <button type="button" (click)="addSeasonDetail(j, i)">Add Season Detail</button>
-
-              </div>
-
-
-              <div class="button-group">
-                <button type="button" *ngIf="getItems(i).value.length > 1" (click)="removeItem(i, j)">-</button>
-                <button type="button" (click)="addItem(i)" *ngIf="j === getItems(i).length - 1">+</button>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-    <br>
-
-    <button (click)="logFormData()">Log Form Data</button>
-    <button type="button" (click)="submitForm()">Submit Form</button>
-    <pre>{{ storeForm.value | json }}</pre>
+<div class="store-form-container" [formGroup]="storeForm">
+  <div class="store-select-container">
+    <label for="store">Select Store:</label>
+    <select formControlName="store" (change)="onStoreChange($event)">
+      <option value="">-- Select Store --</option>
+      <option *ngFor="let store of stores" [value]="store.value">
+        {{ store.label }}
+      </option>
+    </select>
   </div>
 
+  <h3 *ngIf="selectedStore">Selected store is: {{ selectedStore | titlecase }}</h3>
+
+  <div formArrayName="storeDetails">
+    <div *ngFor="let storeDetail of storeDetails.controls; let i = index" [formGroupName]="i">
+      <div formArrayName="items">
+        <div *ngIf="selectedStoreIndex === i">
+          <div *ngFor="let item of getItems(i).controls; let j = index" [formGroupName]="j" class="item-container">
+            <label>Please enter your item size:</label>
+            <label>Size:</label>
+            <input formControlName="size" placeholder="Shoe Size">
+            <small *ngIf="item.get('size')?.invalid && item.get('size')?.touched">
+              size is required
+            </small>
+            <!-- <label>Color:</label> -->
+            <label>Color:</label>
+            <input formControlName="color" placeholder="Color">
+            <small *ngIf="item.get('color')?.invalid &&  item.get('color')?.touched">
+              color is required
+            </small>
+
+            <label>Price:</label>
+            <input formControlName="price" type="number" placeholder="Price">
+            <small *ngIf="item.get('price')?.invalid && item.get('price')">price is required</small>
+
+
+            <label>Season</label>
+            <input type="checkbox" formControlName="season" (change)="toggleSession(j,i)">
+
+
+            <div formArrayName="seasonDetails" *ngIf="item.get('season')?.value">
+              <div *ngFor="let seasonDetail of getSeasonDetails(j, i).controls; let k = index" [formGroupName]="k">
+                <label>Season Name:</label>
+                <input formControlName="seasonName" placeholder="Enter Season Name">
+                <label>Season Detail:</label>
+                <input formControlName="seasonDetail" placeholder="Enter Season Detail">
+                <small *ngIf="seasonDetail?.invalid && seasonDetail?.touched">Please fill all the fields</small>
+                <button type="button" (click)="removeSeasonDetail(j, i, k)">Remove Season Detail</button>
+              </div>
+              <button type="button" (click)="addSeasonDetail(j, i)">Add Season Detail</button>
+
+            </div>
+
+
+            <div class="button-group">
+              <button type="button" *ngIf="getItems(i).value.length > 1" (click)="removeItem(i, j)">-</button>
+              <button type="button" (click)="addItem(i)" *ngIf="j === getItems(i).length - 1">+</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <br>
+
+  <button (click)="logFormData()">Log Form Data</button>
+  <button type="button" (click)="submitForm()">Submit Form</button>
+  <pre>{{ storeForm.value | json }}</pre>
 </div>
