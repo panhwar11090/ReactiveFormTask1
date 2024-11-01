@@ -1,70 +1,133 @@
-<div class="store-form-container" [formGroup]="storeForm">
-  <div class="store-select-container">
-    <label for="store">Select Store:</label>
-    <select formControlName="store" (change)="onStoreChange($event)">
-      <option value="">-- Select Store --</option>
-      <option *ngFor="let store of stores" [value]="store.value">
-        {{ store.label }}
-      </option>
-    </select>
-  </div>
+<div class="flex justify-content-center align-items-center main-div pt-4 pb-4">
+  <div class="shadow-2 border-round-3xl p-4 background-of-form flex w-8 " style=" background-color: #aec3b0;">
+    <form [formGroup]="storeForm" class="w-full ">
+      <!-- Store Selection Section -->
+      <div class="field mb-4">
+        <label for="store" class="text-xl font-medium mb-2">Select Store:</label>
+        <select formControlName="store" (change)="onStoreChange($event)" class="  w-full border-round p-2">
+          <option value="">-- Select Store --</option>
+          <option *ngFor="let store of stores" [value]="store.value">{{ store.label }}</option>
+        </select>
+      </div>
 
-  <h3 *ngIf="selectedStore">Selected store is: {{ selectedStore | titlecase }}</h3>
+      <!-- <h3 *ngIf="selectedStore" class="text-center text-2xl font-bold mt-4 mb-4">Selected Store: {{ selectedStore |
+        titlecase }}</h3> -->
 
-  <div formArrayName="storeDetails">
-    <div *ngFor="let storeDetail of storeDetails.controls; let i = index" [formGroupName]="i">
-      <div formArrayName="items">
-        <div *ngIf="selectedStoreIndex === i">
-          <div *ngFor="let item of getItems(i).controls; let j = index" [formGroupName]="j" class="item-container">
-            <label>Please enter your item size:</label>
-            <label>Size:</label>
-            <input formControlName="size" placeholder="Shoe Size">
-            <small *ngIf="item.get('size')?.invalid && item.get('size')?.touched">
-              size is required
-            </small>
-            <!-- <label>Color:</label> -->
-            <label>Color:</label>
-            <input formControlName="color" placeholder="Color">
-            <small *ngIf="item.get('color')?.invalid &&  item.get('color')?.touched">
-              color is required
-            </small>
+      <div formArrayName="storeDetails">
+        <div *ngFor="let storeDetail of storeDetails.controls; let i = index" [formGroupName]="i">
+          <div>
+            <div formArrayName="items">
+              <div *ngIf="selectedStoreIndex === i" class="border-2 surface-border border-round-2xl p-3 mb-4">
+                <div *ngFor="let item of getItems(i).controls; let j = index" [formGroupName]="j"
+                  class="field grid p-fluid mb-4 gap-3">
 
-            <label>Price:</label>
-            <input formControlName="price" type="number" placeholder="Price">
-            <small *ngIf="item.get('price')?.invalid && item.get('price')">price is required</small>
+                  <!-- Item Fields Container -->
+                  <div class="flex gap-4  sm:flex-wrap lg:flex-wrap ">
+                    <div class=" md:col-6 lg:col-4 mb-3 flex flex-column   ">
+                      <label class="font-semibold mb-2">Size:</label>
+                      <input formControlName="size" placeholder="Shoe Size" class="w-full border-round-xl p-3 flex">
+                      <small *ngIf="item.get('size')?.invalid && item.get('size')?.touched" class="p-error">Size is
+                        required</small>
+                    </div>
 
-
-            <label>Season</label>
-            <input type="checkbox" formControlName="season" (change)="toggleSession(j,i)">
+                    <div class="md:col-6 lg:col-4 mb-3 flex flex-column">
+                      <label class="font-semibold mb-2">Color:</label>
+                      <input formControlName="color" placeholder="Color" class="p-3 w-full border-round-xl flex">
+                      <small *ngIf="item.get('color')?.invalid && item.get('color')?.touched" class="p-error">Color is
+                        required</small>
+                    </div>
 
 
-            <div formArrayName="seasonDetails" *ngIf="item.get('season')?.value">
-              <div *ngFor="let seasonDetail of getSeasonDetails(j, i).controls; let k = index" [formGroupName]="k">
-                <label>Season Name:</label>
-                <input formControlName="seasonName" placeholder="Enter Season Name">
-                <label>Season Detail:</label>
-                <input formControlName="seasonDetail" placeholder="Enter Season Detail">
-                <small *ngIf="seasonDetail?.invalid && seasonDetail?.touched">Please fill all the fields</small>
-                <button type="button" (click)="removeSeasonDetail(j, i, k)">Remove Season Detail</button>
+                    <div class=" md:col-6 lg:col-4 mb-3 flex flex-column">
+                      <label class="font-semibold mb-2">Price:</label>
+                      <input formControlName="price" type="number" placeholder="Price"
+                        class="w-full border-round-xl p-3 flex">
+                      <small *ngIf="item.get('price')?.invalid && item.get('price')?.touched" class="p-error">Price is
+                        required</small>
+                    </div>
+                  </div>
+                  <!-- <div class=" md:col-6 lg:col-4 mb-3 flex flex-column   ">
+                    <label class="font-semibold mb-2">Size:</label>
+                    <input formControlName="size" placeholder="Shoe Size" class="w-full border-round-xl p-3 flex">
+                    <small *ngIf="item.get('size')?.invalid && item.get('size')?.touched" class="p-error">Size is
+                      required</small>
+                  </div>
+
+                  <div class="md:col-6 lg:col-4 mb-3 flex flex-column">
+                    <label class="font-semibold mb-2">Color:</label>
+                    <input formControlName="color" placeholder="Color" class="p-3 w-full border-round-xl flex">
+                    <small *ngIf="item.get('color')?.invalid && item.get('color')?.touched" class="p-error">Color is
+                      required</small>
+                  </div>
+
+                  
+                  <div class=" md:col-6 lg:col-4 mb-3 flex flex-column">
+                    <label class="font-semibold mb-2">Price:</label>
+                    <input formControlName="price" type="number" placeholder="Price"
+                      class="w-full border-round-xl p-3 flex">
+                    <small *ngIf="item.get('price')?.invalid && item.get('price')?.touched" class="p-error">Price is
+                      required</small>
+                  </div> -->
+
+                  <!-- Season Checkbox -->
+                  <div class="col-12 flex align-items-center mt-3 mb-3">
+                    <label class="mr-3 font-semibold">Season:</label>
+                    <input type="checkbox" formControlName="season" (change)="toggleSession(j,i)" class="p-checkbox">
+                  </div>
+
+                  <!-- Season Details Section -->
+                  <div *ngIf="item.get('season')?.value" formArrayName="seasonDetails" class="col-12 mt-4 mb-4">
+                    <div *ngFor="let seasonDetail of getSeasonDetails(j, i).controls; let k = index" [formGroupName]="k"
+                      class="surface-border p-3 border-round-2xl mb-3">
+                      <div class="field grid gap-3">
+                        <div class="col-12 md:col-6 mb-3 ">
+                          <label class="font-semibold mb-2">Season Name:</label>
+                          <input formControlName="seasonName" placeholder="Enter Season Name"
+                            class="  w-full border-round-xl p-2">
+                        </div>
+                        <div class="col-12 md:col-6 mb-3">
+                          <label class="font-semibold mb-2">Season Detail:</label>
+                          <input formControlName="seasonDetail" placeholder="Enter Season Detail"
+                            class="  w-full border-round-xl p-2">
+                        </div>
+                      </div>
+
+                      <!-- Season Add/Remove Buttons -->
+                      <div class="flex mt-2 gap-2 p-2">
+                        <button type="button" class="p-button p-component p-button-danger p-2"
+                          (click)="removeSeasonDetail(j, i, k)">-</button>
+                        <button type="button" class="p-button p-component p-button-success p-2"
+                          (click)="addSeasonDetail(j, i)">+</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Add/Remove Item Buttons -->
+                  <div class="col-12 flex gap-2 mt-3 mb-3">
+                    <button type="button" *ngIf="getItems(i).value.length > 1" (click)="removeItem(i, j)"
+                      class="p-button p-component p-button-danger p-2 border-round-xl">- Remove Item</button>
+                    <button type="button" (click)="addItem(i)" *ngIf="j === getItems(i).length - 1"
+                      class="p-button p-component p-button-success p-2 border-round-xl">+ Add Item</button>
+                  </div>
+                </div>
               </div>
-              <button type="button" (click)="addSeasonDetail(j, i)">Add Season Detail</button>
-
-            </div>
-
-
-            <div class="button-group">
-              <button type="button" *ngIf="getItems(i).value.length > 1" (click)="removeItem(i, j)">-</button>
-              <button type="button" (click)="addItem(i)" *ngIf="j === getItems(i).length - 1">+</button>
             </div>
           </div>
         </div>
-
       </div>
-    </div>
-  </div>
-  <br>
 
-  <button (click)="logFormData()">Log Form Data</button>
-  <button type="button" (click)="submitForm()">Submit Form</button>
-  <pre>{{ storeForm.value | json }}</pre>
+      <!-- Submit and Log Form Data Buttons -->
+      <div class="flex justify-content-center gap-3 mt-4 mb-4">
+        <button type="button" (click)="logFormData()"
+          class="p-button p-component p-button-info p-3 h-3rem border-round-2xl">Log Form Data</button>
+        <button type="button" (click)="submitForm()"
+          class="p-button p-component p-button-success p-3 h-3rem border-round-2xl">Submit Form</button>
+      </div>
+
+      <!-- Form Data Display -->
+      <pre class="mt-4 mb-4 surface-50 p-3 border-round ">
+        {{ storeForm.value | json }}
+      </pre>
+    </form>
+  </div>
 </div>
